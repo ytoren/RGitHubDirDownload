@@ -120,8 +120,8 @@ GitHubDirDownload <- function (
         write.table(
           x = data.frame(filename = download_file_list[i], parse_csv(handle)), 
           file = paste(output_dir, file_name, sep = ''), 
-          sep = sep,
-          row.names = row.names,
+          # sep = sep,
+          # row.names = row.names,
           append = (append_files & i > 1), 
           col.names = (i == 1 | !append_files), # write header only for first line or for each file
           ...
