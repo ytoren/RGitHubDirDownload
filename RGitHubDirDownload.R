@@ -121,9 +121,10 @@ GitHubDirDownload <- function (
           x = data.frame(filename = download_file_list[i], parse_csv(handle)), 
           file = paste(output_dir, file_name, sep = ''), 
           sep = sep,
-          append = (append_files & i > 1), 
           row.names = row.names,
-          col.names = (i == 1 | !append_files) # write header only for first line or for each file
+          append = (append_files & i > 1), 
+          col.names = (i == 1 | !append_files), # write header only for first line or for each file
+          ...
         )  
         
       }
