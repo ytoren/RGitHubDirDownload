@@ -6,8 +6,8 @@ GitHubDirDownload <- function (
 
   git_user, # GitHub username
   git_repo, # GitHub reposetory name
-  git_dir = '/', # subdir. Defaults to root directory. must end with a '/'
-  output_dir = './', # where should the files be stored?
+  git_dir = NULL, # subdir. Defaults to root directory. If specified must end with a '/'
+  output_dir = './', # where should the files be stored? defaults to getwd(). If specified must end with a '/'
   pattern = NULL, # grep pattern to select specific files, e.g. 'csv$'
   
   # Download link components - if the GitHub API changes these should be modified (updated Aug-2016)
@@ -17,7 +17,7 @@ GitHubDirDownload <- function (
   git_api_texts = 'raw/master/',
   
   #function to convert the files into data.frames. NULL triggers dumping of files into separate files 
-  parse_csv = read.csv, 
+  parse_csv = NULL, 
   # special treatment for CSV files: write each file or return a list containing all files. 
   return_df = FALSE,
   # special treatment for CSV files: Should we try to append all files into a single DF?
@@ -56,7 +56,15 @@ GitHubDirDownload <- function (
   global_file_list <- unlist(lapply(content(req)$tree, "[", "path"), use.names = F)
   
   # Select only files form the directory
-  all_files_in_dir <- grep(paste('^', git_dir, sep = ''), global_file_list, value = TRUE)
+  if (!is.null(git_dir)) {
+
+    all_files_in_dir <- grep(paste('^', git_dir, sep = ''), global_file_list, value = TRUE)
+  
+  } else {
+    
+    all_files_in_dir <- global_file_list
+    
+  }
   
   # Clean up (both objects can be large)
   rm(req,global_file_list)
@@ -86,8 +94,19 @@ GitHubDirDownload <- function (
     # write it out
     if (is.null(parse_csv)) {
 
+      # open a connection to a binary file
+      file_con <- file(
+        description =  paste(output_dir, gsub(pattern = '/', '_', download_file_list[i]), sep = ''),
+        open = 'wb'
+      )      
+      
       # If no parse_csv is specified, write "raw" files separately 
-      write(x = content(request, as = 'text'), file = paste(output_dir, gsub(pattern = '/', '_', download_file_list[i]), sep = ''))
+      writeBin(
+        object = content(request, as = 'raw'), 
+        con = file_con
+      )
+      
+      close(file_con)
       
     } else {
 
