@@ -1,3 +1,4 @@
+# Created by Izzie Toren (ytoren@gmail.com)
 # A function to download multiple files from a GitHub data repository directory. depends on <httr> library. 
 # Subdir names are converted in to file prefixs
 # Has special support for CSV fiels (e.g. appending to a single file)
@@ -37,6 +38,17 @@ GitHubDirDownload <- function (
     stop('Please install httr package before proceeding')
   
   }
+
+  # make sure that the direcotry variables and with a "/"
+  if (length(git_dir) > 0) {
+    if (substring(git_dir, first = nchar(git_dir), last = nchar(git_dir)) != '/') {
+      git_dir <- paste(git_dir, '/', sep = '')
+    }
+  }
+  
+  if (substring(output_dir, first = nchar(output_dir), last = nchar(output_dir)) != '/') {
+      output_dir <- paste(output_dir, '/', sep = '')
+    }
 
   # parse url's
   git_name <- paste(git_user, '/', git_repo, '/', sep = '')
