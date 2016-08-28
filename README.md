@@ -22,8 +22,8 @@ The function will check for the presence of the required packages and will retur
 parameter| Description
 ---------|------------
 ```git_user``` | GitHub username
-```git_repo``` | GitHub reposetory name
-```git_dir = NULL```| GitHub subdir. Defaults to root directory. If specified must end with a '/'
+```git_repo``` | GitHub repository name
+```git_dir = NULL```| GitHub sub-directory. Defaults to root directory. If specified must end with a '/'
 ```output_dir = './'``` | Where should the files be stored? defaults to getwd(). If specified must end with a '/'
 ```pattern = NULL``` | grep pattern to select specific files, e.g. 'csv$'. NULL means all files in the directory
 ```git_website_url_base = 'https://github.com/'``` | Download link components^\*^
@@ -33,7 +33,7 @@ parameter| Description
 ```parse_csv = NULL``` |   function to convert the files into data.frames. NULL triggers dumping of files into separate files.
 ```return_df = FALSE``` | special treatment for CSV files: write each file or return a list containing all files.
 ```append_files = TRUE``` | special treatment for CSV files: Should we try to append all files into a single DF?
-```...``` | additional aguments for parse_csv: ```sep = ','```, ```row.names = FALSE``` etc.
+```...``` | additional arguments for parse_csv: ```sep = ','```, ```row.names = FALSE``` etc.
 
 ^\*^ if the GitHub API changes these should be modified (updated Aug-2016)
 
